@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>イベント告知ページ</title>
+  <style>
+    :root {
+      --bg-main: #f7f6f2;
+      --bg-card: #ffffff;
+      --text-main: #2b2b2b;
+      --text-sub: #5c5c5c;
+      --accent: #2e4a62;
+      --accent-light: #4a6b82;
+      --border: #e0ded9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", sans-serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ヒーローヘッダー */
+    .hero {
+      background-color: var(--accent);
+      color: #ffffff;
+      padding: 80px 20px 60px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0.85;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .hero-lead {
+      font-size: 1rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* メインコンテンツ */
+    main {
+      padding: 60px 0;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--accent);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-text {
+      color: var(--text-sub);
+      margin-bottom: 16px;
+    }
+
+    /* 開催概要テーブル */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .info-table th,
+    .info-table td {
+      padding: 16px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .info-table th {
+      width: 25%;
+      color: var(--accent);
+      font-weight: 600;
+      vertical-align: top;
+    }
+
+    .info-table td {
+      color: var(--text-main);
+    }
+
+    /* CTAボタン */
+    .cta-area {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 16px 48px;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--accent-light);
+    }
+
+    /* フッター */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header class="hero">
+    <div class="container">
+      <span class="hero-tag">Special Exhibition & Forum</span>
+      <h1>サンプルイベントタイトルがここに入ります</h1>
+      <p class="hero-lead">ダミーのキャッチコピーです。ここにイベントの魅力やコンセプトを簡潔に記載します。</p>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main>
+    <div class="container">
+      
+      <!-- イベントについて -->
+      <section class="card">
+        <h2 class="section-title">イベント概要</h2>
+        <p class="section-text">
+          ここに概要の本文が入ります。ダミーテキストです。本イベントでは、これからの時代の新しい視点やアイデアを深めるためのセッションと展示を実施いたします。
+        </p>
+        <p class="section-text">
+          サンプルテキストとして、参加者の皆様に向けたメッセージやプログラムの背景などを2〜3段落程度で分かりやすくまとめて掲載します。
+        </p>
+      </section>
+
+      <!-- 日程・場所 -->
+      <section class="card">
+        <h2 class="section-title">開催詳細</h2>
+        <table class="info-table">
+          <tr>
+            <th>開催日程</th>
+            <td>
+              2026年10月15日（木）〜 10月16日（金）<br>
+              開場 10:00 / 終了 18:00（両日共通）
+            </td>
+          </tr>
+          <tr>
+            <th>開催場所</th>
+            <td>
+              サンプルホール 3階 メインカンファレンスルーム<br>
+              〒000-0000 東京都千代田区サンプル町 1-2-3<br>
+              （最寄り駅：サンプル駅 徒歩5分）
+            </td>
+          </tr>
+          <tr>
+            <th>参加費</th>
+            <td>事前登録制 / 無料</td>
+          </tr>
+        </table>
+
+        <!-- 申し込みボタン -->
+        <div class="cta-area">
+          <a href="#" class="btn">参加登録を申し込む</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- フッター -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Sample Event Committee. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

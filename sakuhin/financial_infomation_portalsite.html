@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- 検索エンジンに載せない設定 -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>インデックス投資信託 ＆ 銀行・金融ニュース</title>
+  <style>
+    :root {
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #1e293b;
+      --text-sub: #64748b;
+      --primary: #070c0b;
+      --primary-hover: #09236b;
+      --primary-light: #eff6ff;
+      --border: #e2e8f0;
+      
+      /* バッジカラー */
+      --badge-green: #7edde7;
+      --badge-green-text: #1c3030;
+      --badge-blue: #556ea1;
+      --badge-blue-text: #dce5ea;
+      --badge-orange: #f97bc5;
+      --badge-orange-text: #211520;
+      --badge-purple: #bb85f4;
+      --badge-purple-text: #352043;
+      --badge-slate: #f1f5f9;
+      --badge-slate-text: #475569;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "BIZ UDPGothic", sans-serif;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      padding: 40px 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .header-area {
+      margin-bottom: 24px;
+    }
+
+    .header-area h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .header-area p {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+    }
+
+    /* メインタブ切り替えナビゲーション */
+    .tab-nav {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 8px;
+    }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .tab-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+      background-color: var(--primary-light);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      background-color: #ffffff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border);
+      border-bottom: 2px solid var(--primary);
+    }
+
+    /* タブコンテンツの表示・非表示 */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.25s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- 投信比較タブのスタイル --- */
+    .controls-card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .search-box {
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 10px 14px;
+      font-size: 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    .filter-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .filter-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-sub);
+      margin-right: 4px;
+    }
+
+    .filter-btn {
+      background-color: #f1f5f9;
+      border: 1px solid var(--border);
+      color: var(--text-sub);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background-color: #e2e8f0;
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background-color: var(--primary);
+      color: #ffffff;
+      border-color: var(--primary);
+    }
+
+    .result-status {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-bottom: 12px;
+      padding-left: 4px;
+    }
+
+    .table-container {
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      overflow-x: auto;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    table {
+      width: 100%;
+      min-width: 800px;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    thead {
+      background-color: #f1f5f9;
+      border-bottom: 2px solid var(--border);
+    }
+
+    th {
+      padding: 14px 16px;
+      font-weight: 600;
+      color: var(--text-main);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 16px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tbody tr:hover {
+      background-color: var(--primary-light);
+    }
+
+    .fund-name {
+      font-weight: 600;
+      color: var(--primary);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .fund-sub {
+      font-size: 0.75rem;
+      color: var(--text-sub);
+    }
+
+    .cost-value {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: #0f172a;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .badge-global { background-color: var(--badge-blue); color: var(--badge-blue-text); }
+    .badge-us { background-color: var(--badge-green); color: var(--badge-green-text); }
+    .badge-japan { background-color: var(--badge-orange); color: var(--badge-orange-text); }
+    .badge-emerging { background-color: var(--badge-purple); color: var(--badge-purple-text); }
+    .badge-slate { background-color: var(--badge-slate); color: var(--badge-slate-text); }
+
+    .no-results {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-sub);
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-top: 10px;
+    }
+
+    /* --- 銀行・金融ニュースタブのスタイル --- */
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .news-card {
+      background: var(--bg-card);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    }
+
+    .news-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e1;
+    }
+
+    .news-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .news-source {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-sub);
+    }
+
+    .news-date {
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    .news-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .news-summary {
+      font-size: 0.85rem;
+      color: var(--text-sub);
+      margin-bottom: 16px;
+      flex-grow: 1;
+    }
+
+    .news-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .news-link:hover {
+      text-decoration: underline;
+    }
+
+    .news-link svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .note {
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header-area">
+      <h1>マーケット ＆ 金融ポータル</h1>
+      <p>インデックス投資信託の比較と主要な銀行・金融ニュースをまとめて確認できます。</p>
+    </div>
+
+    <!-- 切り替えタブメニュー（アイコン付き） -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" data-target="tab-funds">
+        <!-- 投資信託/チャートアイコン -->
+        <svg viewBox="0 0 24 24">
+          <path d="M3.5 18.49l6-6.01 4 4L22 6.92l-1.41-1.41-7.09 7.97-4-4L2 16.99z"/>
+        </svg>
+        投資信託 比較表
+      </button>
+
+      <button class="tab-btn" data-target="tab-news">
+        <!-- 銀行・ニュースアイコン -->
+        <svg viewBox="0 0 24 24">
+          <path d="M4 10v7h3v-7H4zm6 0v7h3v-7h-3zM2 22h19v-3H2v3zm14-12v7h3v-7h-3zm-4.5-9L2 6v2h19V6l-9.5-5z"/>
+        </svg>
+        銀行・金融ニュース
+      </button>
+    </nav>
+
+    <!-- ==============================================
+         タブ1: 投資信託比較
+    =============================================== -->
+    <div id="tab-funds" class="tab-content active">
+      <div class="controls-card">
+        <div class="search-box">
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="ファンド名、指数名、キーワードで検索（例: 全世界、S&P500、ニッセイ）..."
+          >
+        </div>
+
+        <div class="filter-buttons">
+          <span class="filter-label">投資対象:</span>
+          <button class="filter-btn active" data-category="all">すべて</button>
+          <button class="filter-btn" data-category="全世界">全世界株式</button>
+          <button class="filter-btn" data-category="米国">米国株式</button>
+          <button class="filter-btn" data-category="国内">国内株式</button>
+          <button class="filter-btn" data-category="新興国">新興国株式</button>
+        </div>
+      </div>
+
+      <div class="result-status" id="resultCount">表示中: 8 件</div>
+
+      <div class="table-container">
+        <table id="fundTable">
+          <thead>
+            <tr>
+              <th>ファンド名（愛称）</th>
+              <th>投資対象</th>
+              <th>連動指数（ベンチマーク）</th>
+              <th>信託報酬（年率・税込）</th>
+              <th>特徴・ポイント</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-category="全世界">
+              <td>
+                <span class="fund-name">eMAXIS Slim 全世界株式（オール・カントリー）</span>
+                <span class="fund-sub">三菱UFJアセットマネジメント</span>
+              </td>
+              <td><span class="badge badge-global">全世界株式</span></td>
+              <td>MSCI オール・カントリー・ワールド・インデックス</td>
+              <td><span class="cost-value">0.05775%</span> 以内</td>
+              <td>これ1本で日本を含む先進国・新興国約47カ国の株式に分散投資可能。</td>
+            </tr>
+
+            <tr data-category="米国">
+              <td>
+                <span class="fund-name">eMAXIS Slim 米国株式（S&P500）</span>
+                <span class="fund-sub">三菱UFJアセットマネジメント</span>
+              </td>
+              <td><span class="badge badge-us">米国株式</span></td>
+              <td>S&P500指数</td>
+              <td><span class="cost-value">0.08140%</span> 以内</td>
+              <td>米国の主要大型株500社に投資。実績・純資産総額ともに国内最大級。</td>
+            </tr>
+
+            <tr data-category="全世界">
+              <td>
+                <span class="fund-name">SBI・V・全世界株式インデックス・ファンド</span>
+                <span class="fund-sub">SBIアセットマネジメント</span>
+              </td>
+              <td><span class="badge badge-global">全世界株式</span></td>
+              <td><span class="cost-value">0.1438%</span> 程度</td>
+              <td>新興国を含む全世界の株式に投資を行い、世界経済全体の成長を捉えます。</td>
+            </tr>
+
+            <tr data-category="全世界">
+              <td>
+                <span class="fund-name">eMAXIS Slim 先進国株式インデックス</span>
+                <span class="fund-sub">三菱UFJアセットマネジメント</span>
+              </td>
+              <td><span class="badge badge-global">先進国株式</span></td>
+              <td>MSCI コクサイ・インデックス</td>
+              <td><span class="cost-value">0.09889%</span> 以内</td>
+              <td>日本を除く主要先進国22カ国に投資。「日本株は別で保有したい」人に最適。</td>
+            </tr>
+
+            <tr data-category="国内">
+              <td>
+                <span class="fund-name">eMAXIS Slim 国内株式（TOPIX）</span>
+                <span class="fund-sub">三菱UFJアセットマネジメント</span>
+              </td>
+              <td><span class="badge badge-japan">国内株式</span></td>
+              <td>東証株価指数（TOPIX）</td>
+              <td><span class="cost-value">0.14300%</span> 以内</td>
+              <td>東証市場全体に幅広く分散投資。日本の経済成長に連動した運用を目指す。</td>
+            </tr>
+
+            <tr data-category="国内">
+              <td>
+                <span class="fund-name">ニッセイ日経225インデックスファンド</span>
+                <span class="fund-sub">ニッセイアセットマネジメント</span>
+              </td>
+              <td><span class="badge badge-japan">国内株式</span></td>
+              <td>日経平均株価（日経225）</td>
+              <td><span class="cost-value">0.14300%</span></td>
+              <td>日本を代表する主要225社に均等寄与度で投資する定番ファンド。</td>
+            </tr>
+
+            <tr data-category="新興国">
+              <td>
+                <span class="fund-name">eMAXIS Slim 新興国株式インデックス</span>
+                <span class="fund-sub">三菱UFJアセットマネジメント</span>
+              </td>
+              <td><span class="badge badge-emerging">新興国株式</span></td>
+              <td>MSCI エマージング・マーケット・インデックス</td>
+              <td><span class="cost-value">0.18590%</span> 以内</td>
+              <td>中国、インド、台湾、ブラジルなどの成長期待が高い新興国市場に投資。</td>
+            </tr>
+
+            <tr data-category="米国">
+              <td>
+                <span class="fund-name">ニッセイNASDAQ100インデックスファンド</span>
+                <span class="fund-sub">ニッセイアセットマネジメント</span>
+              </td>
+              <td><span class="badge badge-us">米国株式</span></td>
+              <td>NASDAQ100指数</td>
+              <td><span class="cost-value">0.20350%</span></td>
+              <td>米NASDAQ市場の金融を除く時価総額上位100社（ハイテク成長企業中心）に集中投資。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="noResults" class="no-results">
+        該当する投資信託が見つかりませんでした。別のキーワードや条件でお試しください。
+      </div>
+
+      <p class="note">※信託報酬等は変更される場合があります。最新情報は各運用会社の交付目論見書をご確認ください。</p>
+    </div>
+
+    <!-- ==============================================
+         タブ2: 銀行・金融ニュース
+    =============================================== -->
+    <div id="tab-news" class="tab-content">
+      <div class="news-grid">
+        
+        <!-- ニュースカード 1 -->
+        <article class="news-card">
+          <div>
+            <div class="news-meta">
+              <span class="news-source">日本銀行</span>
+              <span class="badge badge-slate">金融政策</span>
+            </div>
+            <h2 class="news-title">金融政策決定会合と金利動向に関する公表情報</h2>
+            <p class="news-summary">利上げや金融政策方針の変更に伴う最新の公式発表資料および総裁記者会見の要旨を確認できます。</p>
+          </div>
+          <a href="https://www.boj.or.jp/" target="_blank" rel="noopener noreferrer" class="news-link">
+            公式サイトを見る
+            <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          </a>
+        </article>
+
+        <!-- ニュースカード 2 -->
+        <article class="news-card">
+          <div>
+            <div class="news-meta">
+              <span class="news-source">メガバンク</span>
+              <span class="badge badge-slate">普通・定期金利</span>
+            </div>
+            <h2 class="news-title">三菱UFJ・三井住友・みずほ 円預金金利改定ニュース</h2>
+            <p class="news-summary">大手各行による定期預金および普通預金の適用金利引き上げや、住宅ローン金利の最新推移まとめです。</p>
+          </div>
+          <a href="https://www.bk.mufg.jp/" target="_blank" rel="noopener noreferrer" class="news-link">
+            公式アナウンスへ
+            <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          </a>
+        </article>
+
+        <!-- ニュースカード 3 -->
+        <article class="news-card">
+          <div>
+            <div class="news-meta">
+              <span class="news-source">ネット銀行・証券連携</span>
+              <span class="badge badge-slate">ポイント・優遇</span>
+            </div>
+            <h2 class="news-title">住信SBIネット銀行・楽天銀行 投資連携プログラム</h2>
+            <p class="news-summary">証券口座とのスイープ機能や投信積立によるポイント還元率の最新改定キャンペーン情報です。</p>
+          </div>
+          <a href="https://www.netbk.co.jp/" target="_blank" rel="noopener noreferrer" class="news-link">
+            住信SBI公式サイトへ
+            <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          </a>
+        </article>
+
+        <!-- ニュースカード 4 -->
+        <article class="news-card">
+          <div>
+            <div class="news-meta">
+              <span class="news-source">金融庁</span>
+              <span class="badge badge-slate">制度・税制</span>
+            </div>
+            <h2 class="news-title">新NISAの普及状況と金融経済教育の最新レポート</h2>
+            <p class="news-summary">金融庁が定期発表しているNISA口座開設動向や投資信託の買付状況に関する統計データ・報告書です。</p>
+          </div>
+          <a href="https://www.fsa.go.jp/" target="_blank" rel="noopener noreferrer" class="news-link">
+            金融庁公表資料へ
+            <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          </a>
+        </article>
+
+      </div>
+      <p class="note">※リンク先は各金融機関および公的機関の公式サイト（外部サイト）です。</p>
+    </div>
+
+  </div>
+
+  <!-- タブ切り替え & 絞り込み検索用 JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. タブ切り替え機能
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // アクティブボタンの更新
+          tabBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          // コンテンツの表示・非表示
+          const targetId = btn.getAttribute('data-target');
+          tabContents.forEach(content => {
+            if (content.id === targetId) {
+              content.classList.add('active');
+            } else {
+              content.classList.remove('active');
+            }
+          });
+        });
+      });
+
+      // 2. 投資信託テーブルの絞り込み・検索機能
+      const searchInput = document.getElementById('searchInput');
+      const filterButtons = document.querySelectorAll('.filter-btn');
+      const rows = document.querySelectorAll('#fundTable tbody tr');
+      const resultCount = document.getElementById('resultCount');
+      const noResults = document.getElementById('noResults');
+      const tableContainer = document.querySelector('.table-container');
+
+      let currentCategory = 'all';
+
+      function filterTable() {
+        const searchText = searchInput.value.toLowerCase().trim();
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+          const rowCategory = row.getAttribute('data-category');
+          const rowText = row.textContent.toLowerCase();
+
+          const matchesCategory = (currentCategory === 'all') || (rowCategory === currentCategory);
+          const matchesSearch = rowText.includes(searchText);
+
+          if (matchesCategory && matchesSearch) {
+            row.style.display = '';
+            visibleCount++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        resultCount.textContent = `表示中: ${visibleCount} 件`;
+
+        if (visibleCount === 0) {
+          tableContainer.style.display = 'none';
+          noResults.style.display = 'block';
+        } else {
+          tableContainer.style.display = 'block';
+          noResults.style.display = 'none';
+        }
+      }
+
+      filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentCategory = btn.getAttribute('data-category');
+          filterTable();
+        });
+      });
+
+      searchInput.addEventListener('input', filterTable);
+    });
+  </script>
+
+</body>
+</html>

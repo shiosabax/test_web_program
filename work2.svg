@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 750" width="100%" height="100%">
+  <!-- 背景 -->
+  <rect width="1000" height="750" fill="#e5f0f2" />
+
+  <!-- ブラウザウィンドウ本体 -->
+  <rect x="90" y="105" width="820" height="555" rx="14" fill="#ffffff" filter="drop-shadow(0 14px 28px rgba(32, 60, 60, 0.08))" />
+
+  <!-- ブラウザ上部バー -->
+  <path d="M 90 119 Q 90 105 104 105 L 896 105 Q 910 105 910 119 L 910 165 L 90 165 Z" fill="#f0f5f6" />
+  
+  <!-- ウィンドウ操作ボタン (赤・黄・緑) -->
+  <circle cx="130" cy="135" r="9" fill="#f27265" />
+  <circle cx="158" cy="135" r="9" fill="#f7b738" />
+  <circle cx="186" cy="135" r="9" fill="#58c98d" />
+
+  <!-- アドレスバー風バー -->
+  <rect x="215" y="123" width="480" height="24" rx="12" fill="#dfe9ec" />
+
+  <!-- ヘッダーバナー（エメラルドグリーン） -->
+  <rect x="130" y="200" width="740" height="92" rx="10" fill="#008388" />
+  <!-- バナー内テキストバー -->
+  <rect x="160" y="226" width="360" height="20" rx="10" fill="#ffffff" />
+  <rect x="160" y="256" width="240" height="12" rx="6" fill="#69c2c6" />
+
+  <!-- 銘柄カード 1（左） -->
+  <g transform="translate(130, 315)">
+    <!-- カード背景 -->
+    <rect width="232" height="295" rx="12" fill="#f4f8f9" />
+    
+    <!-- チャート/グラフエリア（緑の棒グラフ風） -->
+    <rect x="12" y="12" width="208" height="125" rx="8" fill="#d2e5e7" />
+    <rect x="42" y="90" width="22" height="35" rx="3" fill="#008388" opacity="0.4" />
+    <rect x="76" y="70" width="22" height="55" rx="3" fill="#008388" opacity="0.6" />
+    <rect x="110" y="55" width="22" height="70" rx="3" fill="#008388" opacity="0.8" />
+    <rect x="144" y="35" width="22" height="90" rx="3" fill="#008388" />
+
+    <!-- 銘柄情報バー -->
+    <rect x="20" y="155" width="120" height="15" rx="7.5" fill="#a7b9be" />
+    <rect x="20" y="180" width="192" height="10" rx="5" fill="#cfdbe0" />
+    <rect x="20" y="198" width="150" height="10" rx="5" fill="#cfdbe0" />
+
+    <!-- パフォーマンス指標タグ -->
+    <rect x="20" y="235" width="85" height="24" rx="12" fill="#d0ebeb" />
+    <rect x="35" y="243" width="55" height="8" rx="4" fill="#008388" />
+
+    <rect x="115" y="235" width="85" height="24" rx="12" fill="#e2ebed" />
+    <rect x="130" y="243" width="55" height="8" rx="4" fill="#889da4" />
+  </g>
+
+  <!-- 銘柄カード 2（中央・ハイライト） -->
+  <g transform="translate(384, 315)">
+    <!-- カード背景（少し濃いめの枠） -->
+    <rect width="232" height="295" rx="12" fill="#f4f8f9" stroke="#b2d4d8" stroke-width="2" />
+    
+    <!-- チャート/グラフエリア（折れ線グラフ風） -->
+    <rect x="12" y="12" width="208" height="125" rx="8" fill="#c3dfe2" />
+    <path d="M 32 105 Q 70 85 95 90 T 150 45 T 190 30" fill="none" stroke="#008388" stroke-width="5" stroke-linecap="round" />
+    <circle cx="190" cy="30" r="6" fill="#f7b738" />
+
+    <!-- 銘柄情報バー -->
+    <rect x="20" y="155" width="130" height="15" rx="7.5" fill="#008388" opacity="0.8" />
+    <rect x="20" y="180" width="192" height="10" rx="5" fill="#cfdbe0" />
+    <rect x="20" y="198" width="165" height="10" rx="5" fill="#cfdbe0" />
+
+    <!-- パフォーマンス指標タグ -->
+    <rect x="20" y="235" width="85" height="24" rx="12" fill="#008388" />
+    <rect x="35" y="243" width="55" height="8" rx="4" fill="#ffffff" />
+
+    <rect x="115" y="235" width="85" height="24" rx="12" fill="#d0ebeb" />
+    <rect x="130" y="243" width="55" height="8" rx="4" fill="#008388" />
+  </g>
+
+  <!-- 銘柄カード 3（右） -->
+  <g transform="translate(638, 315)">
+    <!-- カード背景 -->
+    <rect width="232" height="295" rx="12" fill="#f4f8f9" />
+    
+    <!-- チャート/グラフエリア（円グラフ風） -->
+    <rect x="12" y="12" width="208" height="125" rx="8" fill="#d2e5e7" />
+    <circle cx="116" cy="74" r="38" fill="#a4c9cc" />
+    <path d="M 116 74 L 116 36 A 38 38 0 0 1 152 62 Z" fill="#008388" />
+    <path d="M 116 74 L 152 62 A 38 38 0 0 1 138 106 Z" fill="#58c98d" />
+
+    <!-- 銘柄情報バー -->
+    <rect x="20" y="155" width="110" height="15" rx="7.5" fill="#a7b9be" />
+    <rect x="20" y="180" width="192" height="10" rx="5" fill="#cfdbe0" />
+    <rect x="20" y="198" width="140" height="10" rx="5" fill="#cfdbe0" />
+
+    <!-- パフォーマンス指標タグ -->
+    <rect x="20" y="235" width="85" height="24" rx="12" fill="#d0ebeb" />
+    <rect x="35" y="243" width="55" height="8" rx="4" fill="#008388" />
+
+    <rect x="115" y="235" width="85" height="24" rx="12" fill="#e2ebed" />
+    <rect x="130" y="243" width="55" height="8" rx="4" fill="#889da4" />
+  </g>
+</svg>
