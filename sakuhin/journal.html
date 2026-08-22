@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Journal | 日常を記録する</title>
+  <style>
+    :root {
+      --bg: #f2f2f7;
+      --card-bg: #ffffff;
+      --tint: #007aff;
+      --text: #1c1c1e;
+      --sub-text: #8e8e93;
+      --line: #e5e5ea;
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding-bottom: 90px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(242, 242, 247, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+      z-index: 10;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header-title { font-size: 20px; font-weight: 700; }
+    .nav-back { text-decoration: none; color: var(--tint); font-size: 14px; font-weight: 500; }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* 提案カード（リフレクション） */
+    .prompt-card {
+      background: linear-gradient(135deg, #e0f2fe 0%, #ede9fe 100%);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .prompt-label { font-size: 12px; font-weight: 700; color: #4338ca; letter-spacing: 0.05em; }
+    .prompt-text { font-size: 16px; font-weight: 600; margin: 8px 0 14px; color: #1e1b4b; }
+    .btn-prompt {
+      background: #ffffff;
+      border: none;
+      color: #4338ca;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 13px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    /* エントリー一覧 */
+    .entry-list { display: flex; flex-direction: column; gap: 16px; }
+    .entry-card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+      position: relative;
+    }
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .entry-date { font-size: 13px; font-weight: 600; color: var(--sub-text); }
+    .entry-mood { font-size: 18px; }
+    .entry-body { font-size: 15px; white-space: pre-wrap; word-break: break-word; }
+    .entry-img {
+      width: 100%;
+      max-height: 240px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    /* 新規投稿フローティングボタン */
+    .fab {
+      position: fixed;
+      bottom: 24px;
+      right: calc(50% - 30px);
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--tint);
+      color: white;
+      border: none;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 122, 255, 0.4);
+      cursor: pointer;
+      z-index: 20;
+    }
+
+    /* 入力モーダル */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal.is-open { display: flex; }
+    .modal-content {
+      background: #ffffff;
+      width: 100%;
+      max-width: 600px;
+      height: 85vh;
+      border-radius: 24px 24px 0 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.3s ease-out;
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .btn-cancel, .btn-save {
+      background: none;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .btn-cancel { color: var(--sub-text); }
+    .btn-save { color: var(--tint); font-weight: 700; }
+
+    .mood-selector {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .mood-btn {
+      background: var(--bg);
+      border: 2px solid transparent;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+    .mood-btn.is-selected { border-color: var(--tint); background: #e5f1ff; }
+
+    textarea {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      font-family: inherit;
+      resize: none;
+      padding: 10px 0;
+    }
+
+    .media-input-wrapper {
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+    .media-input-label {
+      display: inline-block;
+      font-size: 13px;
+      color: var(--tint);
+      cursor: pointer;
+      font-weight: 600;
+    }
+    #image-input { display: none; }
+    .preview-thumbnail {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-top: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="../index.html" class="nav-back">← ポートフォリオ</a>
+    <h1 class="header-title">ジャーナル</h1>
+    <div style="width: 80px;"></div>
+  </header>
+
+  <main class="container">
+    <!-- 問いかけ・リフレクション -->
+    <div class="prompt-card">
+      <p class="prompt-label">リフレクションの提案</p>
+      <p class="prompt-text" id="prompt-text">今日一番心が動いた瞬間は何ですか？</p>
+      <button class="btn-prompt" id="btn-use-prompt">このテーマで書く</button>
+    </div>
+
+    <!-- タイムライン -->
+    <div class="entry-list" id="entry-list"></div>
+  </main>
+
+  <!-- 作成ボタン -->
+  <button class="fab" id="btn-open-modal" aria-label="新規エントリー">＋</button>
+
+  <!-- 入力シート（モーダル） -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button class="btn-cancel" id="btn-close-modal">キャンセル</button>
+        <span style="font-weight: 600;">新しいエントリー</span>
+        <button class="btn-save" id="btn-save-entry">完了</button>
+      </div>
+
+      <div class="mood-selector" id="mood-selector">
+        <button class="mood-btn is-selected" data-mood="✨">✨</button>
+        <button class="mood-btn" data-mood="🌿">🌿</button>
+        <button class="mood-btn" data-mood="☕">☕</button>
+        <button class="mood-btn" data-mood="💡">💡</button>
+        <button class="mood-btn" data-mood="🌙">🌙</button>
+      </div>
+
+      <textarea id="entry-input" placeholder="ここをタップして書き始める..."></textarea>
+
+      <div class="media-input-wrapper">
+        <label class="media-input-label" for="image-input">📷 写真を追加</label>
+        <input type="file" id="image-input" accept="image/*">
+        <img id="preview-img" class="preview-thumbnail" alt="プレビュー">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const prompts = [
+      "今日一番心が動いた瞬間は何ですか？",
+      "最近感謝した小さな出来事は？",
+      "いま取り組んでいることで、面白さを感じている部分は？",
+      "今日見つけた、ちょっとした良い景色は？",
+      "リラックスするために今日したいことは？"
+    ];
+
+    let currentImageData = null;
+    let selectedMood = "✨";
+
+    const promptTextEl = document.getElementById("prompt-text");
+    const entryListEl = document.getElementById("entry-list");
+    const modal = document.getElementById("modal");
+    const entryInput = document.getElementById("entry-input");
+    const imageInput = document.getElementById("image-input");
+    const previewImg = document.getElementById("preview-img");
+
+    // 初期化：ランダムなプロンプトのセット
+    promptTextEl.textContent = prompts[Math.floor(Math.random() * prompts.length)];
+
+    // ストレージから取得
+    function getEntries() {
+      return JSON.parse(localStorage.getItem("apple-journal-entries") || "[]");
+    }
+
+    // 描画
+    function renderEntries() {
+      const entries = getEntries();
+      if (entries.length === 0) {
+        entryListEl.innerHTML = `<p style="text-align:center; color:var(--sub-text); padding:40px 0;">まだ記録がありません。<br>「＋」から今日の一言を残してみましょう。</p>`;
+        return;
+      }
+
+      entryListEl.innerHTML = entries.map(item => `
+        <article class="entry-card">
+          <div class="entry-header">
+            <span class="entry-date">${item.date}</span>
+            <span class="entry-mood">${item.mood}</span>
+          </div>
+          <p class="entry-body">${item.text}</p>
+          ${item.image ? `<img src="${item.image}" class="entry-img" alt="ジャーナル画像">` : ""}
+        </article>
+      `).join("");
+    }
+
+    // モーダル操作
+    document.getElementById("btn-open-modal").onclick = () => {
+      modal.classList.add("is-open");
+      entryInput.focus();
+    };
+
+    document.getElementById("btn-close-modal").onclick = () => {
+      modal.classList.remove("is-open");
+      resetForm();
+    };
+
+    document.getElementById("btn-use-prompt").onclick = () => {
+      entryInput.value = `【${promptTextEl.textContent}】\n`;
+      modal.classList.add("is-open");
+      entryInput.focus();
+    };
+
+    // ムード選択
+    document.querySelectorAll(".mood-btn").forEach(btn => {
+      btn.onclick = () => {
+        document.querySelector(".mood-btn.is-selected").classList.remove("is-selected");
+        btn.classList.add("is-selected");
+        selectedMood = btn.dataset.mood;
+      };
+    });
+
+    // 画像読み込み
+    imageInput.onchange = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        currentImageData = reader.result;
+        previewImg.src = currentImageData;
+        previewImg.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    };
+
+    // 保存処理
+    document.getElementById("btn-save-entry").onclick = () => {
+      const text = entryInput.value.trim();
+      if (!text && !currentImageData) return;
+
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      const newEntry = {
+        id: Date.now(),
+        date: dateStr,
+        mood: selectedMood,
+        text: text,
+        image: currentImageData
+      };
+
+      const entries = getEntries();
+      entries.unshift(newEntry);
+      localStorage.setItem("apple-journal-entries", JSON.stringify(entries));
+
+      modal.classList.remove("is-open");
+      resetForm();
+      renderEntries();
+    };
+
+    function resetForm() {
+      entryInput.value = "";
+      currentImageData = null;
+      previewImg.src = "";
+      previewImg.style.display = "none";
+      imageInput.value = "";
+    }
+
+    renderEntries();
+  </script>
+</body>
+</html>
